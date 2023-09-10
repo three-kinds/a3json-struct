@@ -7,7 +7,7 @@ init:
 
 coverage:
 	coverage erase
-	coverage run --source=$(PACKAGE) -m unittest discover
+	coverage run -m unittest discover
 	coverage html --title="$(PACKAGE) coverage report"
 	python -m webbrowser ./htmlcov/index.html
 
