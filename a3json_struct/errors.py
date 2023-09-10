@@ -19,7 +19,10 @@ class ValidationError(Exception):
         self._field_name_list.insert(0, field_name)
 
     def __str__(self) -> str:
-        return self._message
+        if len(self._field_name_list) > 0:
+            field_name = '.'.join(self._field_name_list)
+            error_message = f"{field_name}: {self._message}"
+        else:
+            error_message = self._message
 
-    def __repr__(self) -> str:
-        return f'<{self.__class__.__name__}: {self._message}>'
+        return error_message

@@ -14,7 +14,7 @@ class DecimalField(AbstractField):
         try:
             return Decimal(str(value))
         except DecimalException:
-            raise ValidationError(f'Value "{value}" must be a decimal number.')
+            raise ValidationError(f'Value "{value}" is not a valid decimal number.')
 
     def to_json(self, cleaned_value: Decimal) -> str:
         return str(cleaned_value)

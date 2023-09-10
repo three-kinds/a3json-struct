@@ -35,7 +35,7 @@ class ListField(AbstractField):
             all_set = set()
             for i, v in enumerate(value):
                 if v in all_set:
-                    e = ValidationError(f'Value "{v}" not unique.')
+                    e = ValidationError(f'Value "{v}" is not unique.')
                     e.set_index(i)
                     raise e
                 else:

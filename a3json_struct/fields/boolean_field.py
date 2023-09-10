@@ -18,7 +18,7 @@ class BooleanField(AbstractField):
         if value in ('f', 'false', '0'):
             return False
 
-        raise ValidationError(f'Value "{value}" must be either True or False.')
+        raise ValidationError(f'Value "{value}" is not a valid boolean.')
 
     def to_json(self, cleaned_value: bool) -> bool:
         return cleaned_value

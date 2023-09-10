@@ -13,7 +13,7 @@ class FloatField(AbstractField):
         try:
             return float(str(value))
         except (TypeError, ValueError):
-            raise ValidationError(f'Value "{value}" must be a float.')
+            raise ValidationError(f'Value "{value}" is not a valid float number.')
 
     def to_json(self, cleaned_value: float) -> float:
         return cleaned_value

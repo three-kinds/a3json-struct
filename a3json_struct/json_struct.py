@@ -1,4 +1,4 @@
-from typing import Dict, Any, Type
+from typing import Dict, Any
 import copy
 
 from a3json_struct.errors import ValidationError
@@ -32,13 +32,12 @@ class JsonStructMetaClass(type):
         # parent fields
         mro_structs = new_cls.mro()
         if len(mro_structs) > 3:
-            parent_structs = mro_structs[1: -2]
+            parent_structs = list()
+            for kls in mro_structs[1: -2]:
+                if issubclass(kls, JsonStruct) and kls != JsonStruct:
+                    parent_structs.append(kls)
 
             for parent in parent_structs:
-                if not hasattr(parent, '_fields'):
-                    break
-
-                parent: Type['JsonStruct']
                 parent_fields = parent.get_fields()
 
                 for name, field in parent_fields.items():
@@ -58,33 +57,41 @@ class JsonStructMetaClass(type):
 
 class JsonStruct(metaclass=JsonStructMetaClass):
     _fields: Dict[str, AbstractField]
+    _has_full_clean: bool
 
     @classmethod
     def get_fields(cls) -> Dict[str, AbstractField]:
         return cls._fields
 
     def __init__(self, **kwargs):
+        self._set_has_full_clean(False)
+
         field_name_list = list()
         for field_name, field_instance in self.get_fields().items():
             field_name_list.append(field_name)
-            setattr(self, field_name, None)
+            self._super_setattr(field_name, None)
 
         for k, v in kwargs.items():
             if k in field_name_list:
                 setattr(self, k, v)
 
-        self._has_full_clean = False
+    def _super_setattr(self, name: str, value: Any):
+        super().__setattr__(name, value)
+
+    def _set_has_full_clean(self, v: bool):
+        self._super_setattr('_has_full_clean', v)
 
     def __setattr__(self, name: str, value: Any):
-        super().__setattr__(name, value)
+        self._super_setattr(name, value)
+
         if self._has_full_clean:
-            self._has_full_clean = False
+            self._set_has_full_clean(False)
 
     def __str__(self) -> str:
-        return f"{self.__class__.__name__}"
-
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}: object>"
+        name = self.__class__.__name__
+        if not self._has_full_clean:
+            name = f"{name}['not-clean']"
+        return name
 
     def _clean_fields(self):
         for field_name, field_instance in self.get_fields().items():
@@ -106,6 +113,7 @@ class JsonStruct(metaclass=JsonStructMetaClass):
     def full_clean(self):
         self._clean_fields()
         self._clean_struct()
+        self._set_has_full_clean(True)
 
     def to_json(self) -> dict:
         if not self._has_full_clean:

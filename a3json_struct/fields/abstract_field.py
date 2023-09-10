@@ -27,13 +27,6 @@ class AbstractField(abc.ABC):
         else:
             return f"{self._struct_kls}.{self._name}"
 
-    def __repr__(self) -> str:
-        path = f'{self.__class__.__module__}.{self.__class__.__qualname__}'
-        if self._name is None:
-            return f'<{path}>'
-        else:
-            return f'<{path}: {self._name}>'
-
     def contribute_to_struct(self, struct_kls: Type, name: str):
         self._struct_kls = struct_kls
         self._name = name

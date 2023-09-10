@@ -38,7 +38,7 @@ class IntegerField(AbstractField):
         try:
             return int(value)
         except (TypeError, ValueError):
-            raise ValidationError(f'Value "{value}" must be an integer.')
+            raise ValidationError(f'Value "{value}" is not a valid integer number.')
 
     def to_json(self, cleaned_value: int) -> int:
         return cleaned_value
