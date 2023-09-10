@@ -6,3 +6,6 @@ source =
 exclude_lines =
     raise NotImplementedError
     pass
+
+exclude_also =
+    if TYPE_CHECKING:
