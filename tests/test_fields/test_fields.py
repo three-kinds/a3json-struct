@@ -1,10 +1,36 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from a3json_struct import struct
+from a3json_struct import struct, errors
 
 
 class T(unittest.TestCase):
+
+    def test__complex_struct(self):
+        class SubStruct(struct.JsonStruct):
+            name = struct.CharField(min_length=2)
+
+        class SubComplex(struct.JsonStruct):
+            sub_complex = struct.ListField(element_field=struct.ListField(element_field=struct.ObjectField(SubStruct)))
+
+        class Complex(struct.JsonStruct):
+            complex = struct.ListField(element_field=struct.ListField(element_field=struct.ObjectField(SubComplex)))
+
+        c = Complex()
+        c.complex = [
+            [
+                {"sub_complex": [[{"name": "00"}]]}, {"sub_complex": [[{"name": "01"}, {"name": 'xx'}]]}
+            ],
+            [
+                {"sub_complex": [[{"name": "10"}]]}, {"sub_complex": [[{"name": "11"}]]}
+            ]
+        ]
+        c.full_clean()
+
+        c.complex[0][1].sub_complex[0][1].name = 'x' # noqa
+        with self.assertRaises(errors.ValidationError) as e:
+            c.full_clean()
+        self.assertIn('complex[0][1].sub_complex[0][1].name', str(e.exception))
 
     def test__all_fields__success(self):
         class SubStruct(struct.JsonStruct):
