@@ -1,10 +1,11 @@
 import abc
 from typing import Any, Union
+from decimal import Decimal
 
 from a3json_struct.errors import ValidationError
 
 
-Number = Union[float, int]
+Number = Union[float, int, Decimal]
 
 
 class AbstractIntLimitValidator(abc.ABC):
