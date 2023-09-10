@@ -25,7 +25,7 @@ class AbstractField(abc.ABC):
         if self._struct_kls is None:
             return super().__str__()
         else:
-            return f"{self._struct_kls}.{self._name}"
+            return f"{self._struct_kls.__name__}.{self._name}"
 
     def contribute_to_struct(self, struct_kls: Type, name: str):
         self._struct_kls = struct_kls
