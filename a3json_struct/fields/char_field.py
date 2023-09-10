@@ -41,5 +41,5 @@ class CharField(AbstractField):
         else:
             return str(value)
 
-    def to_json(self, cleaned_value: str) -> str:
+    def _cast_to_json(self, cleaned_value: str) -> str:
         return cleaned_value

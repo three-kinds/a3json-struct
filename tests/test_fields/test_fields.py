@@ -68,3 +68,30 @@ class T(unittest.TestCase):
         self.assertIn('integer_field', rd)
         self.assertIn('list_field', rd)
         self.assertIn('object_field', rd)
+
+    def test__all_fields_not_required__success(self):
+        class SubStruct(struct.JsonStruct):
+            sub_name = struct.CharField()
+
+        class AllFieldsStruct(struct.JsonStruct):
+            boolean_field = struct.BooleanField(required=False)
+            char_field = struct.CharField(required=False)
+            date_field = struct.DateField(required=False)
+            datetime_field = struct.DateTimeField(required=False)
+            decimal_field = struct.DecimalField(required=False)
+            float_field = struct.FloatField(required=False)
+            integer_field = struct.IntegerField(required=False)
+            list_field = struct.ListField(element_field=struct.IntegerField(), required=False)
+            object_field = struct.ObjectField(obj_kls=SubStruct, required=False)
+        
+        afs = AllFieldsStruct()
+        rd = afs.to_json()
+        self.assertEqual(rd['boolean_field'], None)
+        self.assertEqual(rd['char_field'], None)
+        self.assertEqual(rd['date_field'], None)
+        self.assertEqual(rd['datetime_field'], None)
+        self.assertEqual(rd['decimal_field'], None)
+        self.assertEqual(rd['float_field'], None)
+        self.assertEqual(rd['integer_field'], None)
+        self.assertEqual(rd['list_field'], None)
+        self.assertEqual(rd['object_field'], None)

@@ -20,5 +20,5 @@ class BooleanField(AbstractField):
 
         raise ValidationError(f'Value "{value}" is not a valid boolean.')
 
-    def to_json(self, cleaned_value: bool) -> bool:
+    def _cast_to_json(self, cleaned_value: bool) -> bool:
         return cleaned_value

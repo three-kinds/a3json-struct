@@ -19,5 +19,5 @@ class DateTimeField(AbstractField):
                 f'and must be a valid datetime.'
             )
 
-    def to_json(self, cleaned_value: datetime.datetime) -> str:
+    def _cast_to_json(self, cleaned_value: datetime.datetime) -> str:
         return cleaned_value.isoformat()

@@ -16,5 +16,5 @@ class DateField(AbstractField):
         except ValueError:
             raise ValidationError(f'Value "{value}" must has the correct format (YYYY-MM-DD)，and must be a valid date.')
 
-    def to_json(self, cleaned_value: datetime.date) -> str:
+    def _cast_to_json(self, cleaned_value: datetime.date) -> str:
         return cleaned_value.isoformat()

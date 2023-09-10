@@ -24,5 +24,5 @@ class ObjectField(AbstractField):
         obj_instance.full_clean()
         return obj_instance
 
-    def to_json(self, cleaned_value: 'JsonStruct') -> dict:
+    def _cast_to_json(self, cleaned_value: 'JsonStruct') -> dict:
         return cleaned_value.to_json()

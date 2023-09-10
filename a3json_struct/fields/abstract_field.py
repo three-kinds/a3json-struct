@@ -64,5 +64,11 @@ class AbstractField(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def to_json(self, cleaned_value: Any) -> Any:
+    def _cast_to_json(self, cleaned_value: Any) -> Any:
         raise NotImplementedError()
+
+    def to_json(self, cleaned_value: Any) -> Any:
+        if cleaned_value is None:
+            return
+        else:
+            return self._cast_to_json(cleaned_value)

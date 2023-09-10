@@ -58,7 +58,7 @@ class ListField(AbstractField):
 
         return rl
 
-    def to_json(self, cleaned_value_list: List[Any]) -> List[Any]:
+    def _cast_to_json(self, cleaned_value_list: List[Any]) -> List[Any]:
         rl = list()
         for cleaned_value in cleaned_value_list:
             v = self._element_field.to_json(cleaned_value)

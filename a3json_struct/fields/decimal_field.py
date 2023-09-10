@@ -33,5 +33,5 @@ class DecimalField(AbstractField):
         except DecimalException:
             raise ValidationError(f'Value "{value}" is not a valid decimal number.')
 
-    def to_json(self, cleaned_value: Decimal) -> str:
+    def _cast_to_json(self, cleaned_value: Decimal) -> str:
         return str(cleaned_value)
