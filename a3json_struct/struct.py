@@ -10,3 +10,5 @@ from a3json_struct.fields.float_field import FloatField
 from a3json_struct.fields.integer_field import IntegerField
 from a3json_struct.fields.list_field import ListField
 from a3json_struct.fields.object_field import ObjectField
+
+from a3json_struct.fields.int_date_field import IntDateField
