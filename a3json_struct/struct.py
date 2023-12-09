@@ -12,3 +12,4 @@ from a3json_struct.fields.list_field import ListField
 from a3json_struct.fields.object_field import ObjectField
 
 from a3json_struct.fields.int_date_field import IntDateField
+from a3json_struct.fields.dict_field import DictField
