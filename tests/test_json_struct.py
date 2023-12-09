@@ -3,6 +3,7 @@ import unittest
 from decimal import Decimal
 
 from a3json_struct import struct, errors
+from a3json_struct.fields.utils import JsonType
 
 
 class T(unittest.TestCase):
@@ -28,6 +29,13 @@ class T(unittest.TestCase):
             user.full_clean()
 
         self.assertIn("age", str(e.exception))
+        # generate_openapi_schema
+        sd = User.generate_openapi_schema()
+        self.assertEqual(sd['type'], JsonType.Object)
+        self.assertIn('username', sd['required'])
+
+        self.assertIn('username', sd['properties'])
+        self.assertIn('age', sd['properties'])
 
     def test_inherit(self):
         class Animal(struct.JsonStruct):

@@ -3,6 +3,7 @@ import copy
 
 from a3json_struct.errors import ValidationError
 from a3json_struct.fields.abstract_field import AbstractField
+from a3json_struct.fields.utils import JsonType
 
 
 class JsonStructMetaClass(type):
@@ -138,8 +139,7 @@ class JsonStruct(metaclass=JsonStructMetaClass):
             properties[field_name] = field_instance.generate_openapi_object()
 
         return {
-            'type': 'object',
+            'type': JsonType.Object,
             'properties': properties,
             'required': required_list,
         }
-

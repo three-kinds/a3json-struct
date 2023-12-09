@@ -38,22 +38,26 @@ class T(unittest.TestCase):
 
         class AllFieldsStruct(struct.JsonStruct):
             boolean_field = struct.BooleanField()
-            char_field = struct.CharField()
+            char_field = struct.CharField(min_length=1, max_length=10, choices={"x-one", "x-two"}, pattern="^x-*")
             date_field = struct.DateField()
             datetime_field = struct.DateTimeField()
             decimal_field = struct.DecimalField()
+            dict_field = struct.DictField()
             float_field = struct.FloatField()
-            integer_field = struct.IntegerField()
-            list_field = struct.ListField(element_field=struct.IntegerField())
+            int_date_field = struct.IntDateField()
+            integer_field = struct.IntegerField(min_value=1, max_value=10, choices={1, 2, 3})
+            list_field = struct.ListField(min_length=1, max_length=10, element_field=struct.IntegerField())
             object_field = struct.ObjectField(obj_kls=SubStruct)
 
         afs = AllFieldsStruct()
         afs.boolean_field = True
-        afs.char_field = "string"
+        afs.char_field = "x-one"
         afs.date_field = "2020-01-01"
         afs.datetime_field = "2020-01-01T00:00:00.305823+00:00"
+        afs.dict_field = {'dynamic': True}
         afs.decimal_field = '2.1'
         afs.float_field = 2.1
+        afs.int_date_field = 20200102
         afs.integer_field = 2
         afs.list_field = [1, 2, 3]
         afs.object_field = SubStruct(sub_name="sub_name")
@@ -63,11 +67,16 @@ class T(unittest.TestCase):
         self.assertIn('char_field', rd)
         self.assertIn('date_field', rd)
         self.assertIn('datetime_field', rd)
+        self.assertIn('dict_field', rd)
         self.assertIn('decimal_field', rd)
         self.assertIn('float_field', rd)
+        self.assertIn('int_date_field', rd)
         self.assertIn('integer_field', rd)
         self.assertIn('list_field', rd)
         self.assertIn('object_field', rd)
+
+        sd = afs.generate_openapi_schema()
+        self.assertEqual(len(sd['properties']), 11)
 
     def test__all_fields_not_required__success(self):
         class SubStruct(struct.JsonStruct):
