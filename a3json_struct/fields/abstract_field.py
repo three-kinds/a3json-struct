@@ -1,7 +1,8 @@
 import abc
-from typing import Any, Callable, List, Type
+from typing import Any, Callable, List, Type, Tuple
 
 from a3json_struct.errors import ValidationError
+from .utils import set_nonempty_kv
 
 
 class AbstractField(abc.ABC):
@@ -11,12 +12,14 @@ class AbstractField(abc.ABC):
             verbose_name: str = None,
             default: Any = None,
             required: bool = True,
-            validators: List[Callable] = None
+            validators: List[Callable] = None,
+            description: str = None
     ):
         self._verbose_name = verbose_name
         self._default = default
         self._required = required
         self._validators = validators or list()
+        self._description = description
         # struct
         self._struct_kls = None
         self._name = None
@@ -72,3 +75,31 @@ class AbstractField(abc.ABC):
             return
         else:
             return self._cast_to_json(cleaned_value)
+
+    def is_required(self) -> bool:
+        return self._required
+
+    @abc.abstractmethod
+    def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
+        raise NotImplementedError()
+
+    def generate_openapi_object(self) -> dict:
+        json_type, openapi_format = self._get_json_type_and_openapi_format()
+        od = {
+            'type': json_type,
+            'format': openapi_format,
+        }
+
+        set_nonempty_kv(od, 'title', self._verbose_name)
+        set_nonempty_kv(od, 'description', self._description)
+
+        if self._default is not None:
+            if isinstance(self._default, Callable):
+                value = self._default()
+            else:
+                value = self._default
+
+            od['default'] = self.to_json(value)
+
+        return od
+

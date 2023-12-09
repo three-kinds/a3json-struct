@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from typing import Any, List, Iterable
+from typing import Any, List, Iterable, Tuple
 from a3json_struct.errors import ValidationError
 from a3json_struct import validators
 
 from .abstract_field import AbstractField
+from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class ListField(AbstractField):
@@ -64,3 +65,17 @@ class ListField(AbstractField):
             v = self._element_field.to_json(cleaned_value)
             rl.append(v)
         return rl
+
+    def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
+        return JsonType.Array, OpenAPIFormat.Array
+
+    def generate_openapi_object(self) -> dict:
+        od = super().generate_openapi_object()
+
+        od['items'] = self._element_field.generate_openapi_object()
+
+        set_nonempty_kv(od, 'minLength', self._min_length)
+        set_nonempty_kv(od, 'maxLength', self._max_length)
+        set_nonempty_kv(od, 'uniqueItems', self._unique)
+
+        return od

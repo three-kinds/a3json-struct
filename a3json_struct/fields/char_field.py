@@ -1,8 +1,9 @@
-from typing import Any, Set
+from typing import Any, Set, Tuple
 from a3json_struct.errors import ValidationError
 from a3json_struct import validators
 
 from .abstract_field import AbstractField
+from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class CharField(AbstractField):
@@ -43,3 +44,18 @@ class CharField(AbstractField):
 
     def _cast_to_json(self, cleaned_value: str) -> str:
         return cleaned_value
+
+    def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
+        return JsonType.String, OpenAPIFormat.String
+
+    def generate_openapi_object(self) -> dict:
+        od = super().generate_openapi_object()
+
+        set_nonempty_kv(od, 'minLength', self._min_length)
+        set_nonempty_kv(od, 'maxLength', self._max_length)
+        set_nonempty_kv(od, 'pattern', self._pattern)
+
+        if self._choices is not None:
+            od['enum'] = list(self._choices)
+
+        return od

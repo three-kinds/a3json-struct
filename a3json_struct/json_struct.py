@@ -125,3 +125,21 @@ class JsonStruct(metaclass=JsonStructMetaClass):
             rd[field_name] = field_instance.to_json(value)
 
         return rd
+
+    @classmethod
+    def generate_openapi_schema(cls) -> dict:
+        required_list = list()
+        properties = dict()
+
+        for field_name, field_instance in cls.get_fields().items():
+            if field_instance.is_required():
+                required_list.append(field_name)
+
+            properties[field_name] = field_instance.generate_openapi_object()
+
+        return {
+            'type': 'object',
+            'properties': properties,
+            'required': required_list,
+        }
+

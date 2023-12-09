@@ -1,8 +1,9 @@
-from typing import Any
+from typing import Any, Tuple
 import datetime
 
 from a3json_struct.errors import ValidationError
 from .abstract_field import AbstractField
+from .utils import JsonType, OpenAPIFormat
 
 
 class DateTimeField(AbstractField):
@@ -21,3 +22,6 @@ class DateTimeField(AbstractField):
 
     def _cast_to_json(self, cleaned_value: datetime.datetime) -> str:
         return cleaned_value.isoformat()
+
+    def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
+        return JsonType.String, OpenAPIFormat.Date

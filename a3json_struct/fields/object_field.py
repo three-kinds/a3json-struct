@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Type, TYPE_CHECKING
+from typing import Any, Type, TYPE_CHECKING, Tuple
 from a3json_struct.errors import ValidationError
 
 from .abstract_field import AbstractField
+from .utils import JsonType, OpenAPIFormat
 if TYPE_CHECKING:
     from a3json_struct.json_struct import JsonStruct
 
@@ -26,3 +27,14 @@ class ObjectField(AbstractField):
 
     def _cast_to_json(self, cleaned_value: 'JsonStruct') -> dict:
         return cleaned_value.to_json()
+
+    def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
+        return JsonType.Object, OpenAPIFormat.Object
+
+    def generate_openapi_object(self) -> dict:
+        od = super().generate_openapi_object()
+
+        sub_od = self._obj_kls.generate_openapi_schema()
+        od.update(sub_od)
+
+        return od
