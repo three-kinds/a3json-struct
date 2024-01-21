@@ -79,3 +79,14 @@ class ListField(AbstractField):
         set_nonempty_kv(od, 'uniqueItems', self._unique)
 
         return od
+
+    def generate_meta_object(self) -> dict:
+        od = super().generate_meta_object()
+
+        od['element_field_meta'] = self._element_field.generate_meta_object()
+
+        od['min_length'] = self._min_length
+        od['max_length'] = self._max_length
+        od['unique'] = self._unique
+
+        return od

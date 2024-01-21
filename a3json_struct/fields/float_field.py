@@ -38,3 +38,11 @@ class FloatField(AbstractField):
 
     def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
         return JsonType.Number, OpenAPIFormat.Float
+
+    def generate_meta_object(self) -> dict:
+        od = super().generate_meta_object()
+
+        od['min_value'] = self._min_value
+        od['max_value'] = self._max_value
+
+        return od

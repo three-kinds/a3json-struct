@@ -38,3 +38,11 @@ class ObjectField(AbstractField):
         od.update(sub_od)
 
         return od
+
+    def generate_meta_object(self) -> dict:
+        od = super().generate_meta_object()
+
+        od['obj_kls_meta'] = self._obj_kls.generate_meta_schema()
+        od['obj_kls_name'] = self._obj_kls.__name__
+
+        return od

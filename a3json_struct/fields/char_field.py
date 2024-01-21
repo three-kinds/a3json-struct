@@ -59,3 +59,13 @@ class CharField(AbstractField):
             od['enum'] = list(self._choices)
 
         return od
+
+    def generate_meta_object(self) -> dict:
+        od = super().generate_meta_object()
+
+        od['min_length'] = self._min_length
+        od['max_length'] = self._max_length
+        od['choices'] = list(self._choices) if self._choices is not None else None
+        od['pattern'] = self._pattern
+
+        return od

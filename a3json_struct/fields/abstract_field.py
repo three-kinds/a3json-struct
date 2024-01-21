@@ -103,3 +103,11 @@ class AbstractField(abc.ABC):
 
         return od
 
+    def generate_meta_object(self) -> dict:
+        # It is used only for simple verification, so it's not support custom validators or default.
+        return {
+            'class_name': self.__class__.__name__,
+            'verbose_name': self._verbose_name,
+            'required': self._required,
+            'description': self._description
+        }

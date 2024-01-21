@@ -1,5 +1,9 @@
 # History
 
+## 0.2.1
+
+* Add `generate_meta_schema` and `build_variant_from_meta_schema`
+
 ## 0.2.0
 
 * Add `DictField`

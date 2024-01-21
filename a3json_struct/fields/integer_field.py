@@ -57,3 +57,12 @@ class IntegerField(AbstractField):
             od['enum'] = list(self._choices)
 
         return od
+
+    def generate_meta_object(self) -> dict:
+        od = super().generate_meta_object()
+
+        od['min_value'] = self._min_value
+        od['max_value'] = self._max_value
+        od['choices'] = list(self._choices) if self._choices is not None else None
+
+        return od
