@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import unittest
 from decimal import Decimal
 
@@ -12,10 +13,24 @@ class T(unittest.TestCase):
         class User(struct.JsonStruct):
             username = struct.CharField()
             age = struct.IntegerField()
+            updated_time = struct.DateTimeField(required=False)
 
         user = User(username="username")
         user.age = 13
+        user.updated_time = '2021-02-01T00:00:01'
+        # to_json
+        rd = user.to_bson()
+        self.assertTrue(isinstance(rd['updated_time'], datetime.datetime))
 
+        user.updated_time = datetime.date.today()
+        user.full_clean()
+        self.assertTrue(isinstance(user.updated_time, datetime.datetime))
+
+        user.updated_time = '2021-02-01'
+        user.full_clean()
+        self.assertTrue(isinstance(user.updated_time, datetime.datetime))
+
+        # to_json
         rd = user.to_json()
 
         self.assertNotIn("not-clean", str(user))
@@ -46,6 +61,8 @@ class T(unittest.TestCase):
         user = user_class()
         user.username = "username"
         user.age = 13
+        rd = user.to_bson()
+        self.assertEqual(rd['updated_time'], None)
         rd = user.to_json()
 
         self.assertNotIn("not-clean", str(user))

@@ -70,11 +70,20 @@ class AbstractField(abc.ABC):
     def _cast_to_json(self, cleaned_value: Any) -> Any:
         raise NotImplementedError()
 
+    def _cast_to_bson(self, cleaned_value: Any) -> Any:
+        return self._cast_to_json(cleaned_value)
+
     def to_json(self, cleaned_value: Any) -> Any:
         if cleaned_value is None:
             return
         else:
             return self._cast_to_json(cleaned_value)
+
+    def to_bson(self, cleaned_value: Any) -> Any:
+        if cleaned_value is None:
+            return
+        else:
+            return self._cast_to_bson(cleaned_value)
 
     def is_required(self) -> bool:
         return self._required

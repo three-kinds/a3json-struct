@@ -129,6 +129,17 @@ class JsonStruct(metaclass=JsonStructMetaClass):
 
         return rd
 
+    def to_bson(self) -> dict:
+        if not self._has_full_clean:
+            self.full_clean()
+
+        rd = dict()
+        for field_name, field_instance in self.get_fields().items():
+            value = getattr(self, field_name, None)
+            rd[field_name] = field_instance.to_bson(value)
+
+        return rd
+
     @classmethod
     def generate_openapi_schema(cls) -> dict:
         required_list = list()
