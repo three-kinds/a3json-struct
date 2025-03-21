@@ -1,6 +1,6 @@
 # a3json-struct
 
-* describe json struct with python class
+* `a3json-struct` can describe JSON structs using class-based syntax.
 
 ## Install
 

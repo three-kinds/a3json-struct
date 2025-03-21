@@ -1,7 +1,7 @@
 from typing import Dict, Any, Type
 import copy
 
-from a3py.simplified.dynamic import find_all_subclasses
+from a3py.practical.dynamic import find_all_subclasses
 from a3py.simplified.case import snake2camel
 from a3json_struct.errors import ValidationError
 from a3json_struct.fields.abstract_field import AbstractField

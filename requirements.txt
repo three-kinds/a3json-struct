@@ -1,5 +1,1 @@
-a3py >= 0.1.3
-
-# maintenance
-coverage >= 6.3.2
-twine
+a3py >= 0.3.0

@@ -1,20 +1,18 @@
-SHELL := /bin/bash
-
-PACKAGE = a3json_struct
-
 init:
 	pip3 install -r requirements.txt
+	pip3 install -r requirements-dev.txt
 
 coverage:
 	coverage erase
 	coverage run -m unittest discover
-	coverage html --title="$(PACKAGE) coverage report"
-	python -m webbrowser ./htmlcov/index.html
+	coverage html
+	python3 -m webbrowser ./htmlcov/index.html
 
-test: coverage
+test:
+	tox -p
 
-sdist:
-	python setup.py sdist
+build:
+	python -m build
 
 clean:
 	rm -rf build dist .egg *.egg-info
@@ -22,4 +20,9 @@ clean:
 upload:
 	twine upload dist/* --verbose
 
-package: sdist upload clean
+format:
+	ruff format
+
+check:
+	ruff check
+	mypy

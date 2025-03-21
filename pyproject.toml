@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61.0.0,<69.3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "a3json-struct"
+dynamic = ["version"]
+requires-python = ">= 3.10"
+dependencies = [
+    "a3py >= 0.3.0",
+]
+authors = [
+  {name = "three-kinds", email = "3179158552@qq.com"},
+]
+description = "a3json-struct can describe JSON structs using class-based syntax."
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/three-kinds/a3json-struct"
+Source = "https://github.com/three-kinds/a3json-struct"
+
+[tool.setuptools.dynamic]
+version = {attr = "a3json_struct.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["a3json_struct*"]
+
+[tool.coverage.run]
+source = ["a3json_struct"]
+parallel = false
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "raise AssertionError",
+    "if TYPE_CHECKING:",
+    "pass"
+]
+
+[tool.mypy]
+packages = [
+    "a3json_struct",
+    "tests"
+]
+disable_error_code = [
+    "import-untyped",
+    "method-assign"
+]
+
+[tool.ruff]
+src = [
+    "a3json_struct",
+    "tests"
+]
+line-length = 120
