@@ -9,7 +9,6 @@ Number = Union[float, int, Decimal]
 
 
 class AbstractIntLimitValidator(abc.ABC):
-
     def __init__(self, limit_value: Number):
         self._limit_value = limit_value
 

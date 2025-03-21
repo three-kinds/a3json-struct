@@ -7,14 +7,14 @@ from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class CharField(AbstractField):
-
     def __init__(
-            self,
-            min_length: int = None,
-            max_length: int = None,
-            choices: Set[str] = None,
-            pattern: str = None,
-            *args, **kwargs
+        self,
+        min_length: int = None,
+        max_length: int = None,
+        choices: Set[str] = None,
+        pattern: str = None,
+        *args,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
@@ -51,21 +51,21 @@ class CharField(AbstractField):
     def generate_openapi_object(self) -> dict:
         od = super().generate_openapi_object()
 
-        set_nonempty_kv(od, 'minLength', self._min_length)
-        set_nonempty_kv(od, 'maxLength', self._max_length)
-        set_nonempty_kv(od, 'pattern', self._pattern)
+        set_nonempty_kv(od, "minLength", self._min_length)
+        set_nonempty_kv(od, "maxLength", self._max_length)
+        set_nonempty_kv(od, "pattern", self._pattern)
 
         if self._choices is not None:
-            od['enum'] = list(self._choices)
+            od["enum"] = list(self._choices)
 
         return od
 
     def generate_meta_object(self) -> dict:
         od = super().generate_meta_object()
 
-        od['min_length'] = self._min_length
-        od['max_length'] = self._max_length
-        od['choices'] = list(self._choices) if self._choices is not None else None
-        od['pattern'] = self._pattern
+        od["min_length"] = self._min_length
+        od["max_length"] = self._max_length
+        od["choices"] = list(self._choices) if self._choices is not None else None
+        od["pattern"] = self._pattern
 
         return od

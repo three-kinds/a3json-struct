@@ -6,7 +6,6 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class DictField(AbstractField):
-
     def _cast_to_python(self, value: Any) -> dict:
         if isinstance(value, dict):
             return value

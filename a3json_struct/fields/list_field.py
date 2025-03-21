@@ -8,14 +8,14 @@ from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class ListField(AbstractField):
-
     def __init__(
-            self,
-            element_field: AbstractField,
-            unique: bool = False,
-            min_length: int = None,
-            max_length: int = None,
-            *args, **kwargs
+        self,
+        element_field: AbstractField,
+        unique: bool = False,
+        min_length: int = None,
+        max_length: int = None,
+        *args,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
@@ -72,21 +72,21 @@ class ListField(AbstractField):
     def generate_openapi_object(self) -> dict:
         od = super().generate_openapi_object()
 
-        od['items'] = self._element_field.generate_openapi_object()
+        od["items"] = self._element_field.generate_openapi_object()
 
-        set_nonempty_kv(od, 'minLength', self._min_length)
-        set_nonempty_kv(od, 'maxLength', self._max_length)
-        set_nonempty_kv(od, 'uniqueItems', self._unique)
+        set_nonempty_kv(od, "minLength", self._min_length)
+        set_nonempty_kv(od, "maxLength", self._max_length)
+        set_nonempty_kv(od, "uniqueItems", self._unique)
 
         return od
 
     def generate_meta_object(self) -> dict:
         od = super().generate_meta_object()
 
-        od['element_field_meta'] = self._element_field.generate_meta_object()
+        od["element_field_meta"] = self._element_field.generate_meta_object()
 
-        od['min_length'] = self._min_length
-        od['max_length'] = self._max_length
-        od['unique'] = self._unique
+        od["min_length"] = self._min_length
+        od["max_length"] = self._max_length
+        od["unique"] = self._unique
 
         return od

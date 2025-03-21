@@ -9,7 +9,6 @@ from a3json_struct.fields.utils import JsonType
 
 
 class JsonStructMetaClass(type):
-
     def __new__(mcs, name, bases, attrs: dict, **kwargs):
         # exclude self
         parents = [b for b in bases if isinstance(b, JsonStructMetaClass)]
@@ -36,7 +35,7 @@ class JsonStructMetaClass(type):
         mro_structs = new_cls.mro()
         if len(mro_structs) > 3:
             parent_structs = list()
-            for kls in mro_structs[1: -2]:
+            for kls in mro_structs[1:-2]:
                 if issubclass(kls, JsonStruct) and kls != JsonStruct:
                     parent_structs.append(kls)
 
@@ -82,7 +81,7 @@ class JsonStruct(metaclass=JsonStructMetaClass):
         super().__setattr__(name, value)
 
     def _set_has_full_clean(self, v: bool):
-        self._super_setattr('_has_full_clean', v)
+        self._super_setattr("_has_full_clean", v)
 
     def __setattr__(self, name: str, value: Any):
         self._super_setattr(name, value)
@@ -152,9 +151,9 @@ class JsonStruct(metaclass=JsonStructMetaClass):
             properties[field_name] = field_instance.generate_openapi_object()
 
         return {
-            'type': JsonType.Object,
-            'properties': properties,
-            'required': required_list,
+            "type": JsonType.Object,
+            "properties": properties,
+            "required": required_list,
         }
 
     @classmethod
@@ -164,21 +163,19 @@ class JsonStruct(metaclass=JsonStructMetaClass):
         for field_name, field_instance in cls.get_fields().items():
             fields[field_name] = field_instance.generate_meta_object()
 
-        return {
-            'fields': fields
-        }
+        return {"fields": fields}
 
     @classmethod
-    def build_variant_from_meta_schema(cls, schema: Dict[str, Dict], class_name: str = None) -> Type['JsonStruct']:
+    def build_variant_from_meta_schema(cls, schema: Dict[str, Dict], class_name: str = None) -> Type["JsonStruct"]:
         fields = dict()
-        for field_name, meta_object in schema['fields'].items():
+        for field_name, meta_object in schema["fields"].items():
             instance = _get_field_instance_by_meta(cls, meta_object)
             fields[field_name] = instance
 
-        class_name = class_name or 'Variant'
+        class_name = class_name or "Variant"
         # noinspection PyTypeChecker
-        variant: Type['JsonStruct'] = type(class_name, (cls, ), dict())
-        setattr(variant, '_fields', fields)
+        variant: Type["JsonStruct"] = type(class_name, (cls,), dict())
+        setattr(variant, "_fields", fields)
         return variant
 
 
@@ -187,27 +184,27 @@ _all_inner_fields_classes: Dict[str, Type] = dict()
 
 def _get_all_inner_field_class() -> Dict:
     if len(_all_inner_fields_classes) == 0:
-        field_class_list = find_all_subclasses('a3json_struct.struct', AbstractField)
+        field_class_list = find_all_subclasses("a3json_struct.struct", AbstractField)
         for field_class in field_class_list:
             _all_inner_fields_classes[field_class.__name__] = field_class
 
     return _all_inner_fields_classes
 
 
-def _get_field_instance_by_meta(base: Type['JsonStruct'], meta_object: dict) -> AbstractField:
+def _get_field_instance_by_meta(base: Type["JsonStruct"], meta_object: dict) -> AbstractField:
     inner_classes = _get_all_inner_field_class()
 
-    class_name = meta_object.pop('class_name')
+    class_name = meta_object.pop("class_name")
     field_class = inner_classes.get(class_name)
     assert field_class is not None, f"Unknown inner field class: {class_name}"
 
-    if class_name == 'ListField':
-        element_field_meta = meta_object.pop('element_field_meta')
-        meta_object['element_field'] = _get_field_instance_by_meta(base, element_field_meta)
-    elif class_name == 'ObjectField':
-        obj_kls_meta = meta_object.pop('obj_kls_meta')
-        obj_kls_name = meta_object.pop('obj_kls_name')
-        meta_object['obj_kls'] = base.build_variant_from_meta_schema(obj_kls_meta, class_name=snake2camel(obj_kls_name))
+    if class_name == "ListField":
+        element_field_meta = meta_object.pop("element_field_meta")
+        meta_object["element_field"] = _get_field_instance_by_meta(base, element_field_meta)
+    elif class_name == "ObjectField":
+        obj_kls_meta = meta_object.pop("obj_kls_meta")
+        obj_kls_name = meta_object.pop("obj_kls_name")
+        meta_object["obj_kls"] = base.build_variant_from_meta_schema(obj_kls_meta, class_name=snake2camel(obj_kls_name))
 
     instance = field_class(**meta_object)
     return instance

@@ -7,7 +7,6 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class DateTimeField(AbstractField):
-
     def _cast_to_python(self, value: Any) -> datetime.datetime:
         if isinstance(value, datetime.datetime):
             return value
@@ -19,7 +18,7 @@ class DateTimeField(AbstractField):
         except ValueError:
             raise ValidationError(
                 f'Value "{value}" must has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ])，"'
-                f'and must be a valid datetime.'
+                f"and must be a valid datetime."
             )
 
     def _cast_to_json(self, cleaned_value: datetime.datetime) -> str:

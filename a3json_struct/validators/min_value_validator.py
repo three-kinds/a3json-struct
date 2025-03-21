@@ -2,7 +2,6 @@ from .abstract_limit_validator import AbstractIntLimitValidator, Number
 
 
 class MinValueValidator(AbstractIntLimitValidator):
-
     def _clean(self, value: Number) -> Number:
         return value
 

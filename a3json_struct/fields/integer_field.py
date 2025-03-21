@@ -7,14 +7,7 @@ from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class IntegerField(AbstractField):
-
-    def __init__(
-            self,
-            min_value: int = None,
-            max_value: int = None,
-            choices: Set[int] = None,
-            *args, **kwargs
-    ):
+    def __init__(self, min_value: int = None, max_value: int = None, choices: Set[int] = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._min_value = min_value
@@ -50,19 +43,19 @@ class IntegerField(AbstractField):
     def generate_openapi_object(self) -> dict:
         od = super().generate_openapi_object()
 
-        set_nonempty_kv(od, 'minimum', self._min_value)
-        set_nonempty_kv(od, 'maximum', self._max_value)
+        set_nonempty_kv(od, "minimum", self._min_value)
+        set_nonempty_kv(od, "maximum", self._max_value)
 
         if self._choices is not None:
-            od['enum'] = list(self._choices)
+            od["enum"] = list(self._choices)
 
         return od
 
     def generate_meta_object(self) -> dict:
         od = super().generate_meta_object()
 
-        od['min_value'] = self._min_value
-        od['max_value'] = self._max_value
-        od['choices'] = list(self._choices) if self._choices is not None else None
+        od["min_value"] = self._min_value
+        od["max_value"] = self._max_value
+        od["choices"] = list(self._choices) if self._choices is not None else None
 
         return od

@@ -5,7 +5,6 @@ from a3json_struct import struct, errors
 
 
 class T(unittest.TestCase):
-
     def test__validators(self):
         class User(struct.JsonStruct):
             height_m = struct.FloatField(min_value=0.0, max_value=2.5)
@@ -23,6 +22,6 @@ class T(unittest.TestCase):
         user.full_clean()
 
         # invalid
-        user.height_m = 'abc'
+        user.height_m = "abc"
         with self.assertRaises(errors.ValidationError):
             user.full_clean()

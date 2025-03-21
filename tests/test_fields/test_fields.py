@@ -5,7 +5,6 @@ from a3json_struct import struct, errors
 
 
 class T(unittest.TestCase):
-
     def test__complex_struct(self):
         class SubStruct(struct.JsonStruct):
             name = struct.CharField(min_length=2)
@@ -18,19 +17,15 @@ class T(unittest.TestCase):
 
         c = Complex()
         c.complex = [
-            [
-                {"sub_complex": [[{"name": "00"}]]}, {"sub_complex": [[{"name": "01"}, {"name": 'xx'}]]}
-            ],
-            [
-                {"sub_complex": [[{"name": "10"}]]}, {"sub_complex": [[{"name": "11"}]]}
-            ]
+            [{"sub_complex": [[{"name": "00"}]]}, {"sub_complex": [[{"name": "01"}, {"name": "xx"}]]}],
+            [{"sub_complex": [[{"name": "10"}]]}, {"sub_complex": [[{"name": "11"}]]}],
         ]
         c.full_clean()
 
-        c.complex[0][1].sub_complex[0][1].name = 'x' # noqa
+        c.complex[0][1].sub_complex[0][1].name = "x"  # noqa
         with self.assertRaises(errors.ValidationError) as e:
             c.full_clean()
-        self.assertIn('complex[0][1].sub_complex[0][1].name', str(e.exception))
+        self.assertIn("complex[0][1].sub_complex[0][1].name", str(e.exception))
 
     def test__all_fields__success(self):
         class SubStruct(struct.JsonStruct):
@@ -54,8 +49,8 @@ class T(unittest.TestCase):
         afs.char_field = "x-one"
         afs.date_field = "2020-01-01"
         afs.datetime_field = "2020-01-01T00:00:00.305823+00:00"
-        afs.dict_field = {'dynamic': True}
-        afs.decimal_field = '2.1'
+        afs.dict_field = {"dynamic": True}
+        afs.decimal_field = "2.1"
         afs.float_field = 2.1
         afs.int_date_field = 20200102
         afs.integer_field = 2
@@ -63,20 +58,20 @@ class T(unittest.TestCase):
         afs.object_field = SubStruct(sub_name="sub_name")
 
         rd = afs.to_json()
-        self.assertIn('boolean_field', rd)
-        self.assertIn('char_field', rd)
-        self.assertIn('date_field', rd)
-        self.assertIn('datetime_field', rd)
-        self.assertIn('dict_field', rd)
-        self.assertIn('decimal_field', rd)
-        self.assertIn('float_field', rd)
-        self.assertIn('int_date_field', rd)
-        self.assertIn('integer_field', rd)
-        self.assertIn('list_field', rd)
-        self.assertIn('object_field', rd)
+        self.assertIn("boolean_field", rd)
+        self.assertIn("char_field", rd)
+        self.assertIn("date_field", rd)
+        self.assertIn("datetime_field", rd)
+        self.assertIn("dict_field", rd)
+        self.assertIn("decimal_field", rd)
+        self.assertIn("float_field", rd)
+        self.assertIn("int_date_field", rd)
+        self.assertIn("integer_field", rd)
+        self.assertIn("list_field", rd)
+        self.assertIn("object_field", rd)
 
         sd = afs.generate_openapi_schema()
-        self.assertEqual(len(sd['properties']), 11)
+        self.assertEqual(len(sd["properties"]), 11)
 
     def test__all_fields_not_required__success(self):
         class SubStruct(struct.JsonStruct):
@@ -92,15 +87,15 @@ class T(unittest.TestCase):
             integer_field = struct.IntegerField(required=False)
             list_field = struct.ListField(element_field=struct.IntegerField(), required=False)
             object_field = struct.ObjectField(obj_kls=SubStruct, required=False)
-        
+
         afs = AllFieldsStruct()
         rd = afs.to_json()
-        self.assertEqual(rd['boolean_field'], None)
-        self.assertEqual(rd['char_field'], None)
-        self.assertEqual(rd['date_field'], None)
-        self.assertEqual(rd['datetime_field'], None)
-        self.assertEqual(rd['decimal_field'], None)
-        self.assertEqual(rd['float_field'], None)
-        self.assertEqual(rd['integer_field'], None)
-        self.assertEqual(rd['list_field'], None)
-        self.assertEqual(rd['object_field'], None)
+        self.assertEqual(rd["boolean_field"], None)
+        self.assertEqual(rd["char_field"], None)
+        self.assertEqual(rd["date_field"], None)
+        self.assertEqual(rd["datetime_field"], None)
+        self.assertEqual(rd["decimal_field"], None)
+        self.assertEqual(rd["float_field"], None)
+        self.assertEqual(rd["integer_field"], None)
+        self.assertEqual(rd["list_field"], None)
+        self.assertEqual(rd["object_field"], None)

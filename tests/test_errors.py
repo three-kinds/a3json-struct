@@ -4,7 +4,6 @@ from a3json_struct import errors
 
 
 class T(unittest.TestCase):
-
     def test__str(self):
         message = "message"
         e = errors.ValidationError(message)

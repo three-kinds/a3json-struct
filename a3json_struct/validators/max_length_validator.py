@@ -4,7 +4,6 @@ from .abstract_limit_validator import AbstractIntLimitValidator, Number
 
 
 class MaxLengthValidator(AbstractIntLimitValidator):
-
     def _get_error_message(self, limit_value: Number) -> str:
         return f"Ensure this value has at most {limit_value} elements."
 

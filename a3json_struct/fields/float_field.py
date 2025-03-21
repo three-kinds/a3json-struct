@@ -7,13 +7,7 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class FloatField(AbstractField):
-    
-    def __init__(
-            self,
-            min_value: float = None,
-            max_value: float = None,
-            *args, **kwargs
-    ):
+    def __init__(self, min_value: float = None, max_value: float = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._min_value = min_value
@@ -42,7 +36,7 @@ class FloatField(AbstractField):
     def generate_meta_object(self) -> dict:
         od = super().generate_meta_object()
 
-        od['min_value'] = self._min_value
-        od['max_value'] = self._max_value
+        od["min_value"] = self._min_value
+        od["max_value"] = self._max_value
 
         return od

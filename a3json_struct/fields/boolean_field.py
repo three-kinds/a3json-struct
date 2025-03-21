@@ -6,17 +6,16 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class BooleanField(AbstractField):
-
     def _cast_to_python(self, value: Any) -> bool:
         if isinstance(value, bool):
             return value
 
         value = str(value).lower()
 
-        if value in ('t', 'true', '1'):
+        if value in ("t", "true", "1"):
             return True
 
-        if value in ('f', 'false', '0'):
+        if value in ("f", "false", "0"):
             return False
 
         raise ValidationError(f'Value "{value}" is not a valid boolean.')

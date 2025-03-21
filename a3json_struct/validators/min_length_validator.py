@@ -4,7 +4,6 @@ from .abstract_limit_validator import AbstractIntLimitValidator, Number
 
 
 class MinLengthValidator(AbstractIntLimitValidator):
-
     def _get_error_message(self, limit_value: Number) -> str:
         return f"Ensure this value has at least {limit_value} elements."
 

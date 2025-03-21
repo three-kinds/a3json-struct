@@ -6,14 +6,13 @@ from .utils import set_nonempty_kv
 
 
 class AbstractField(abc.ABC):
-
     def __init__(
-            self,
-            verbose_name: str = None,
-            default: Any = None,
-            required: bool = True,
-            validators: List[Callable] = None,
-            description: str = None
+        self,
+        verbose_name: str = None,
+        default: Any = None,
+        required: bool = True,
+        validators: List[Callable] = None,
+        description: str = None,
     ):
         self._verbose_name = verbose_name
         self._default = default
@@ -95,12 +94,12 @@ class AbstractField(abc.ABC):
     def generate_openapi_object(self) -> dict:
         json_type, openapi_format = self._get_json_type_and_openapi_format()
         od = {
-            'type': json_type,
-            'format': openapi_format,
+            "type": json_type,
+            "format": openapi_format,
         }
 
-        set_nonempty_kv(od, 'title', self._verbose_name)
-        set_nonempty_kv(od, 'description', self._description)
+        set_nonempty_kv(od, "title", self._verbose_name)
+        set_nonempty_kv(od, "description", self._description)
 
         if self._default is not None:
             if isinstance(self._default, Callable):
@@ -108,15 +107,15 @@ class AbstractField(abc.ABC):
             else:
                 value = self._default
 
-            od['default'] = self.to_json(value)
+            od["default"] = self.to_json(value)
 
         return od
 
     def generate_meta_object(self) -> dict:
         # It is used only for simple verification, so it's not support custom validators or default.
         return {
-            'class_name': self.__class__.__name__,
-            'verbose_name': self._verbose_name,
-            'required': self._required,
-            'description': self._description
+            "class_name": self.__class__.__name__,
+            "verbose_name": self._verbose_name,
+            "required": self._required,
+            "description": self._description,
         }

@@ -6,7 +6,6 @@ from a3json_struct import struct, errors
 
 
 class T(unittest.TestCase):
-
     def test__validators(self):
         class User(struct.JsonStruct):
             money = struct.DecimalField(min_value=Decimal(0), max_value=Decimal(10))
@@ -24,6 +23,6 @@ class T(unittest.TestCase):
         user.full_clean()
 
         # invalid
-        user.money = 'abc'
+        user.money = "abc"
         with self.assertRaises(errors.ValidationError):
             user.full_clean()
