@@ -9,7 +9,13 @@ class RegexValidator:
     _inverse_match = False
     _error_message = "Enter a valid value."
 
-    def __init__(self, pattern: str = None, flags: int = None, inverse_match: bool = None, error_message: str = None):
+    def __init__(
+        self,
+        pattern: str | None = None,
+        flags: int | None = None,
+        inverse_match: bool | None = None,
+        error_message: str | None = None,
+    ):
         if pattern is not None:
             self._pattern = pattern
         if flags is not None:

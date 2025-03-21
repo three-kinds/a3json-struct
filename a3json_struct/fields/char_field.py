@@ -9,10 +9,10 @@ from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 class CharField(AbstractField):
     def __init__(
         self,
-        min_length: int = None,
-        max_length: int = None,
-        choices: Set[str] = None,
-        pattern: str = None,
+        min_length: int | None = None,
+        max_length: int | None = None,
+        choices: Set[str] | None = None,
+        pattern: str | None = None,
         *args,
         **kwargs,
     ):

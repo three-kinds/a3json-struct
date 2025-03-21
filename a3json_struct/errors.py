@@ -1,8 +1,11 @@
+from typing import List
+
+
 class ValidationError(Exception):
     def __init__(self, message: str):
         self._message = message
-        self._field_name_list = list()
-        self._index_list = list()
+        self._field_name_list: List[str] = list()
+        self._index_list: List[int] = list()
 
     def set_index(self, index: int):
         self._index_list.insert(0, index)

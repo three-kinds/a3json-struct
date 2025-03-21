@@ -8,7 +8,7 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class DecimalField(AbstractField):
-    def __init__(self, min_value: Decimal = None, max_value: Decimal = None, *args, **kwargs):
+    def __init__(self, min_value: Decimal | None = None, max_value: Decimal | None = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._min_value = min_value

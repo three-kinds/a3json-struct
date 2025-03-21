@@ -53,7 +53,7 @@ class JsonStructMetaClass(type):
             field_instance.contribute_to_struct(new_cls, field_name)
 
         # set private _fields
-        new_cls._fields = fields
+        setattr(new_cls, "_fields", fields)
         return new_cls
 
 
@@ -166,7 +166,9 @@ class JsonStruct(metaclass=JsonStructMetaClass):
         return {"fields": fields}
 
     @classmethod
-    def build_variant_from_meta_schema(cls, schema: Dict[str, Dict], class_name: str = None) -> Type["JsonStruct"]:
+    def build_variant_from_meta_schema(
+        cls, schema: Dict[str, Dict], class_name: str | None = None
+    ) -> Type["JsonStruct"]:
         fields = dict()
         for field_name, meta_object in schema["fields"].items():
             instance = _get_field_instance_by_meta(cls, meta_object)

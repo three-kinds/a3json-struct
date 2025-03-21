@@ -7,7 +7,14 @@ from .utils import JsonType, OpenAPIFormat, set_nonempty_kv
 
 
 class IntegerField(AbstractField):
-    def __init__(self, min_value: int = None, max_value: int = None, choices: Set[int] = None, *args, **kwargs):
+    def __init__(
+        self,
+        min_value: int | None = None,
+        max_value: int | None = None,
+        choices: Set[int] | None = None,
+        *args,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
 
         self._min_value = min_value

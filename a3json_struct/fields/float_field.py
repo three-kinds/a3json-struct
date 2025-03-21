@@ -7,7 +7,7 @@ from .utils import JsonType, OpenAPIFormat
 
 
 class FloatField(AbstractField):
-    def __init__(self, min_value: float = None, max_value: float = None, *args, **kwargs):
+    def __init__(self, min_value: float | None = None, max_value: float | None = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._min_value = min_value

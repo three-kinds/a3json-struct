@@ -125,9 +125,9 @@ class T(unittest.TestCase):
             price = struct.DecimalField()
 
         class Displayable:
-            name: str
+            name: str  # type: ignore
 
-            def display(self):
+            def display(self) -> str:
                 return self.name
 
         class Fish(Animal, Product, Displayable):

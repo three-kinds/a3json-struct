@@ -8,11 +8,11 @@ from .utils import set_nonempty_kv
 class AbstractField(abc.ABC):
     def __init__(
         self,
-        verbose_name: str = None,
+        verbose_name: str | None = None,
         default: Any = None,
         required: bool = True,
-        validators: List[Callable] = None,
-        description: str = None,
+        validators: List[Callable] | None = None,
+        description: str | None = None,
     ):
         self._verbose_name = verbose_name
         self._default = default
@@ -20,8 +20,8 @@ class AbstractField(abc.ABC):
         self._validators = validators or list()
         self._description = description
         # struct
-        self._struct_kls = None
-        self._name = None
+        self._struct_kls: Type | None = None
+        self._name: str | None = None
 
     def __str__(self) -> str:
         if self._struct_kls is None:
@@ -37,7 +37,7 @@ class AbstractField(abc.ABC):
 
     def _validate(self, value: Any) -> Any:
         if value is None and self._default is not None:
-            if isinstance(self._default, Callable):
+            if callable(self._default):
                 value = self._default()
             else:
                 value = self._default
@@ -102,7 +102,7 @@ class AbstractField(abc.ABC):
         set_nonempty_kv(od, "description", self._description)
 
         if self._default is not None:
-            if isinstance(self._default, Callable):
+            if callable(self._default):
                 value = self._default()
             else:
                 value = self._default

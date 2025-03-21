@@ -12,8 +12,8 @@ class ListField(AbstractField):
         self,
         element_field: AbstractField,
         unique: bool = False,
-        min_length: int = None,
-        max_length: int = None,
+        min_length: int | None = None,
+        max_length: int | None = None,
         *args,
         **kwargs,
     ):
