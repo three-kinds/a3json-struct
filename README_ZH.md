@@ -1,27 +1,27 @@
 # a3json-struct
 
-English | [简体中文](README_ZH.md)
+[English](README.md) | 简体中文
 
-* `a3json-struct` can describe JSON structs using class-based syntax.
+`a3json-struct`可以用基于class的语法来描述JSON struct。
 
-## 1. Introduction
+## 1. 简介
 
-* [Support multiple data type fields](a3json_struct/fields)
-* Custom format validators
-* Class instances can be exported as JSON, BSON
-* The OpenAPI schema can be exported
-* The attributes of a class can be exported as a JSON description, and the class can be restored from the JSON description
+* [支持多种数据类型](a3json_struct/fields)
+* 可以自定义格式检测
+* 可以将类实例导出为json、bson
+* 可以导出openapi schema
+* 可以将类的属性导出为json描述，可以从json描述还原成类
 
-## 2. Usage
+## 2. 使用
 
-### Install
+### 安装
 
 ```shell
 pip install a3json-struct
 
 ```
 
-## Examples
+### 样例
 
 ```python
 from datetime import datetime
@@ -56,11 +56,11 @@ if __name__ == '__main__':
     video.description = "video description"
     video.score = '2.3'
     video.comment_list = [
-        comment,  # It can be an object instance
-        {"content": "content", "post_time": datetime.now()}  # or a dictionary
+        comment,  # 可以是对象实例
+        {"content": "content", "post_time": datetime.now()}  # 也可以是字典
     ]
 
-    video.full_clean()  # Validate data (this step can be omitted if using to_json or to_bson)
+    video.full_clean()  # 验证数据 （如果使用to_json或to_bson的话，这个步骤可以省略）
     assert isinstance(video.to_json()["comment_list"][0]["post_time"], str)
     assert isinstance(video.to_bson()["comment_list"][0]["post_time"], datetime)
 
