@@ -28,6 +28,9 @@ class ObjectField(AbstractField):
     def _cast_to_json(self, cleaned_value: "JsonStruct") -> dict:
         return cleaned_value.to_json()
 
+    def _cast_to_bson(self, cleaned_value: "JsonStruct") -> dict:
+        return cleaned_value.to_bson()
+
     def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
         return JsonType.Object, OpenAPIFormat.Object
 

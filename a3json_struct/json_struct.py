@@ -169,6 +169,7 @@ class JsonStruct(metaclass=JsonStructMetaClass):
     def build_variant_from_meta_schema(
         cls, schema: Dict[str, Dict], class_name: str | None = None
     ) -> Type["JsonStruct"]:
+        schema = copy.deepcopy(schema)
         fields = dict()
         for field_name, meta_object in schema["fields"].items():
             instance = _get_field_instance_by_meta(cls, meta_object)

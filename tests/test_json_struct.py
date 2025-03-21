@@ -110,6 +110,9 @@ class T(unittest.TestCase):
         video.comment_list = [{"user": {"name": "commenter"}, "content": "content", "post_time": "2024-01-21 17:57:00"}]
         video.highlight_list = [[1, 2], [3, 4]]
         video.full_clean()
+        # to_json
+        rd = video.to_bson()
+        self.assertTrue(isinstance(rd["comment_list"][0]["post_time"], datetime.datetime))
 
         video.comment_list = [{"user": {"name": ""}, "content": "content", "post_time": "2024-01-21 17:57:00"}]
         with self.assertRaises(errors.ValidationError) as e:

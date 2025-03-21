@@ -66,6 +66,13 @@ class ListField(AbstractField):
             rl.append(v)
         return rl
 
+    def _cast_to_bson(self, cleaned_value_list: List[Any]) -> List[Any]:
+        rl = list()
+        for cleaned_value in cleaned_value_list:
+            v = self._element_field.to_bson(cleaned_value)
+            rl.append(v)
+        return rl
+
     def _get_json_type_and_openapi_format(self) -> Tuple[str, str]:
         return JsonType.Array, OpenAPIFormat.Array
 
